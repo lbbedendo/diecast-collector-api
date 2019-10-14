@@ -16,6 +16,13 @@ public class Automaker {
     @Column(name = "country", length = 100)
     private String country;
 
+    public Automaker() {}
+
+    public Automaker(@NotNull String name, String country) {
+        this.name = name;
+        this.country = country;
+    }
+
     public Integer getId() {
         return id;
     }

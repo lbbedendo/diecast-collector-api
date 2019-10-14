@@ -7,6 +7,7 @@ import diecast.collector.api.repository.AutomakerRepository;
 
 import javax.inject.Singleton;
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 public class AutomakerService {
@@ -16,16 +17,22 @@ public class AutomakerService {
         this.automakerRepository = automakerRepository;
     }
 
-    public Automaker getById(Integer id) {
-        return automakerRepository.findById(id).orElse(null);
+    public Optional<Automaker> getById(Integer id) {
+        return automakerRepository.findById(id);
     }
 
     public List<Automaker> getAll() {
         return Lists.newArrayList(automakerRepository.findAll());
     }
 
-    public Automaker save(AutomakerSaveRequest request) {
+    public Automaker create(AutomakerSaveRequest request) {
         var automaker = new Automaker();
+        automaker.setName(request.getName());
+        automaker.setCountry(request.getCountry());
+        return automakerRepository.save(automaker);
+    }
+
+    public Automaker update(Automaker automaker, AutomakerSaveRequest request) {
         automaker.setName(request.getName());
         automaker.setCountry(request.getCountry());
         return automakerRepository.save(automaker);
