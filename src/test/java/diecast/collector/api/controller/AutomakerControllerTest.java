@@ -1,7 +1,7 @@
 package diecast.collector.api.controller;
 
 import diecast.collector.api.client.AutomakerTestClient;
-import diecast.collector.api.domain.Automaker;
+import diecast.collector.api.dto.AutomakerSaveRequest;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.runtime.server.EmbeddedServer;
@@ -39,15 +39,26 @@ public class AutomakerControllerTest {
 
     @Test
     public void testCreateAutomakerWhenBodyIsValid() {
-        var automaker = new Automaker();
-        automaker.setName("Honda");
-        automaker.setCountry("Japan");
-        var response = client.create(automaker);
+        var request = new AutomakerSaveRequest("Honda", "Japan");
+        var response = client.create(request);
         assertThat(response.code()).isEqualTo(HttpStatus.CREATED.getCode());
         var body = response.body();
         assertThat(body).isNotNull();
         assertThat(body.getId()).isNotNull();
         assertThat(body.getName()).isEqualTo("Honda");
         assertThat(body.getCountry()).isEqualTo("Japan");
+    }
+
+    @Test
+    public void testUpdateAutomakerWhenBodyIsValid() {
+        var responseCreated = client.create(new AutomakerSaveRequest("Chvrolet", "Canada"));
+        assertThat(responseCreated.code()).isEqualTo(HttpStatus.CREATED.getCode());
+        assertThat(responseCreated.body()).isNotNull();
+        var responseUpdated = client.update(responseCreated.body().getId(), new AutomakerSaveRequest("Chevrolet", "United States"));
+        assertThat(responseUpdated.code()).isEqualTo(HttpStatus.OK.getCode());
+        var body = responseUpdated.body();
+        assertThat(body).isNotNull();
+        assertThat(body.getName()).isEqualTo("Chevrolet");
+        assertThat(body.getCountry()).isEqualTo("United States");
     }
 }

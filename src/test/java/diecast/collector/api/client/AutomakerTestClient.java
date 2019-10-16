@@ -1,6 +1,7 @@
 package diecast.collector.api.client;
 
 import diecast.collector.api.domain.Automaker;
+import diecast.collector.api.dto.AutomakerSaveRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Get;
@@ -14,8 +15,8 @@ public interface AutomakerTestClient {
     Automaker getById(Integer id);
 
     @Post("/")
-    HttpResponse<Automaker> create(@Body Automaker automaker);
+    HttpResponse<Automaker> create(@Body AutomakerSaveRequest request);
 
     @Put("/{id}")
-    HttpResponse<Automaker> update(Integer id, @Body Automaker automaker);
+    HttpResponse<Automaker> update(Integer id, @Body AutomakerSaveRequest request);
 }
