@@ -37,4 +37,8 @@ public class AutomakerService {
         automaker.setCountry(request.getCountry());
         return automakerRepository.save(automaker);
     }
+
+    public void delete(Automaker automaker) {
+        automakerRepository.delete(automaker);
+    }
 }

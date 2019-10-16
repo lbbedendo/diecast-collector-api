@@ -54,6 +54,17 @@ public class AutomakerController {
                 .notFound();
     }
 
+    @Delete("/{id}")
+    @Transactional
+    public HttpResponse<Automaker> delete(Integer id) {
+        var automaker = automakerService.getById(id).orElse(null);
+        if (automaker == null) {
+            return HttpResponse.notFound();
+        }
+        automakerService.delete(automaker);
+        return HttpResponse.ok(automaker);
+    }
+
     private URI location(Integer id) {
         return URI.create("/automaker/" + id);
     }
