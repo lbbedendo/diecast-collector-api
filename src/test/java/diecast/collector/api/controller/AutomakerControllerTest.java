@@ -3,7 +3,6 @@ package diecast.collector.api.controller;
 import diecast.collector.api.client.AutomakerTestClient;
 import diecast.collector.api.dto.AutomakerSaveRequest;
 import io.micronaut.http.HttpStatus;
-import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.test.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
