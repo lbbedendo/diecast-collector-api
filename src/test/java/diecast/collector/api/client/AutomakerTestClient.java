@@ -9,7 +9,7 @@ import io.micronaut.http.client.annotation.Client;
 @Client("/automaker")
 public interface AutomakerTestClient {
     @Get("/{id}")
-    Automaker getById(Integer id);
+    HttpResponse<Automaker> getById(Integer id);
 
     @Post("/")
     HttpResponse<Automaker> create(@Body AutomakerSaveRequest request);

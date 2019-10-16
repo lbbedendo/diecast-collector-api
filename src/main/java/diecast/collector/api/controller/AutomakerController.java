@@ -21,8 +21,14 @@ public class AutomakerController {
     }
 
     @Get("/{id}")
-    public Automaker getById(Integer id) {
-        return automakerService.getById(id).orElse(null);
+    public HttpResponse<Automaker> getById(Integer id) {
+        var automaker = automakerService.getById(id).orElse(null);
+
+        return Objects.nonNull(automaker)
+                ? HttpResponse
+                .ok(automaker)
+                : HttpResponse
+                .notFound();
     }
 
     @Get("/")
