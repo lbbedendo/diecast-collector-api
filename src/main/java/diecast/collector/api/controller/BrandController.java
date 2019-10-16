@@ -1,14 +1,68 @@
 package diecast.collector.api.controller;
 
-import io.micronaut.http.HttpStatus;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
+import diecast.collector.api.domain.Brand;
+import diecast.collector.api.dto.BrandSaveRequest;
+import diecast.collector.api.service.BrandService;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.annotation.*;
+
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
+import java.util.Objects;
 
 @Controller("/brand")
 public class BrandController {
+    private BrandService brandService;
+
+    public BrandController(BrandService brandService) {
+        this.brandService = brandService;
+    }
+
+    @Get("/{id}")
+    public Brand getById(Integer id) {
+        return brandService.getById(id).orElse(null);
+    }
 
     @Get("/")
-    public HttpStatus index() {
-        return HttpStatus.OK;
+    public List<Brand> getAll() {
+        return brandService.getAll();
+    }
+
+    @Post("/")
+    public HttpResponse<Brand> create(@Body @Valid BrandSaveRequest request) {
+        var brand = brandService.create(request);
+
+        return HttpResponse
+                .created(brand, location(brand.getId()));
+    }
+
+    @Put("/{id}")
+    @Transactional
+    public HttpResponse<Brand> update(Integer id, @Body @Valid BrandSaveRequest request) {
+        var brand = brandService.getById(id).orElse(null);
+
+        return Objects.nonNull(brand)
+                ? HttpResponse
+                .ok(brandService.update(brand, request))
+                .headers(headers -> headers.location(location(brand.getId())))
+                : HttpResponse
+                .notFound();
+    }
+
+    @Delete("/{id}")
+    @Transactional
+    public HttpResponse<Brand> delete(Integer id) {
+        var brand = brandService.getById(id).orElse(null);
+        if (brand == null) {
+            return HttpResponse.notFound();
+        }
+        brandService.delete(brand);
+        return HttpResponse.ok(brand);
+    }
+
+    private URI location(Integer id) {
+        return URI.create("/brand/" + id);
     }
 }
