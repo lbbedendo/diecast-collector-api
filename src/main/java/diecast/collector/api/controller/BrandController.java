@@ -21,8 +21,14 @@ public class BrandController {
     }
 
     @Get("/{id}")
-    public Brand getById(Integer id) {
-        return brandService.getById(id).orElse(null);
+    public HttpResponse<Brand> getById(Integer id) {
+        var brand = brandService.getById(id).orElse(null);
+
+        return Objects.nonNull(brand)
+                ? HttpResponse
+                .ok(brand)
+                : HttpResponse
+                .notFound();
     }
 
     @Get("/")
