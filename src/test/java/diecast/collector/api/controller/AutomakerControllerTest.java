@@ -53,12 +53,13 @@ public class AutomakerControllerTest {
     public void testUpdateAutomakerWhenBodyIsValid() {
         var responseCreated = client.create(new AutomakerSaveRequest("Chvrolet", "Canada"));
         assertThat(responseCreated.code()).isEqualTo(HttpStatus.CREATED.getCode());
-        assertThat(responseCreated.body()).isNotNull();
-        var responseUpdated = client.update(responseCreated.body().getId(), new AutomakerSaveRequest("Chevrolet", "United States"));
+        var itemCreated = responseCreated.body();
+        assertThat(itemCreated).isNotNull();
+        var responseUpdated = client.update(itemCreated.getId(), new AutomakerSaveRequest("Chevrolet", "United States"));
         assertThat(responseUpdated.code()).isEqualTo(HttpStatus.OK.getCode());
-        var body = responseUpdated.body();
-        assertThat(body).isNotNull();
-        assertThat(body.getName()).isEqualTo("Chevrolet");
-        assertThat(body.getCountry()).isEqualTo("United States");
+        var itemUpdated = responseUpdated.body();
+        assertThat(itemUpdated).isNotNull();
+        assertThat(itemUpdated.getName()).isEqualTo("Chevrolet");
+        assertThat(itemUpdated.getCountry()).isEqualTo("United States");
     }
 }
