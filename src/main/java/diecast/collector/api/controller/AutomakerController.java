@@ -5,7 +5,6 @@ import diecast.collector.api.dto.AutomakerSaveRequest;
 import diecast.collector.api.service.AutomakerService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
-import io.micronaut.validation.Validated;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -13,7 +12,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
-@Validated
 @Controller("/automaker")
 public class AutomakerController {
     private AutomakerService automakerService;
@@ -37,15 +35,14 @@ public class AutomakerController {
         var automaker = automakerService.create(request);
 
         return HttpResponse
-                .created(automaker)
-                .headers(headers -> headers.location(location(automaker.getId())));
-
+                .created(automaker, location(automaker.getId()));
     }
 
     @Put("/{id}")
     @Transactional
     public HttpResponse<Automaker> update(Integer id, @Body @Valid AutomakerSaveRequest request) {
         var automaker = automakerService.getById(id).orElse(null);
+
         return Objects.nonNull(automaker)
                 ? HttpResponse
                 .ok(automakerService.update(automaker, request))
