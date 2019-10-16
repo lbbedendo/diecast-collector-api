@@ -37,6 +37,24 @@ public class Model {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
+    public Model() {}
+
+    public Model(@NotNull String name,
+                 Integer modelYear,
+                 ModelScale scale,
+                 String colorRgba,
+                 Automaker automaker,
+                 Collection collection,
+                 Brand brand) {
+        this.name = name;
+        this.modelYear = modelYear;
+        this.scale = scale;
+        this.colorRgba = colorRgba;
+        this.automaker = automaker;
+        this.collection = collection;
+        this.brand = brand;
+    }
+
     public Integer getId() {
         return id;
     }

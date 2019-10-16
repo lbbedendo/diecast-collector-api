@@ -13,6 +13,12 @@ public class Brand {
     @NotNull
     private String name;
 
+    public Brand() {}
+
+    public Brand(@NotNull String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }

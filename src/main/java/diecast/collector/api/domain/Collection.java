@@ -16,6 +16,13 @@ public class Collection {
     @Column(name = "year")
     private Integer year;
 
+    public Collection() {}
+
+    public Collection(@NotNull String name, Integer year) {
+        this.name = name;
+        this.year = year;
+    }
+
     public Integer getId() {
         return id;
     }
