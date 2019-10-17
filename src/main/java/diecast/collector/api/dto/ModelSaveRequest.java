@@ -1,5 +1,8 @@
 package diecast.collector.api.dto;
 
+import diecast.collector.api.domain.Automaker;
+import diecast.collector.api.domain.Brand;
+import diecast.collector.api.domain.Collection;
 import diecast.collector.api.enums.ModelScale;
 
 import javax.validation.constraints.NotEmpty;
@@ -72,6 +75,10 @@ public class ModelSaveRequest {
         this.automakerId = automakerId;
     }
 
+    public Automaker getAutomaker() {
+        return automakerId != null ? new Automaker(automakerId) : null;
+    }
+
     public Integer getCollectionId() {
         return collectionId;
     }
@@ -80,11 +87,19 @@ public class ModelSaveRequest {
         this.collectionId = collectionId;
     }
 
+    public Collection getCollection() {
+        return collectionId != null ? new Collection(collectionId) : null;
+    }
+
     public Integer getBrandId() {
         return brandId;
     }
 
     public void setBrandId(Integer brandId) {
         this.brandId = brandId;
+    }
+
+    public Brand getBrand() {
+        return brandId != null ? new Brand(brandId) : null;
     }
 }

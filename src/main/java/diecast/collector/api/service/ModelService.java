@@ -1,9 +1,6 @@
 package diecast.collector.api.service;
 
 import com.google.common.collect.Lists;
-import diecast.collector.api.domain.Automaker;
-import diecast.collector.api.domain.Brand;
-import diecast.collector.api.domain.Collection;
 import diecast.collector.api.domain.Model;
 import diecast.collector.api.dto.ModelSaveRequest;
 import diecast.collector.api.repository.ModelRepository;
@@ -34,9 +31,9 @@ public class ModelService {
                 request.getModelYear(),
                 request.getScale(),
                 request.getColorRgba(),
-                new Automaker(request.getAutomakerId()),
-                new Collection(request.getCollectionId()),
-                new Brand(request.getBrandId()));
+                request.getAutomaker(),
+                request.getCollection(),
+                request.getBrand());
         return modelRepository.save(model);
     }
 
@@ -45,9 +42,9 @@ public class ModelService {
         model.setModelYear(request.getModelYear());
         model.setScale(request.getScale());
         model.setColorRgba(request.getColorRgba());
-        model.setAutomaker(new Automaker(request.getAutomakerId()));
-        model.setCollection(new Collection(request.getCollectionId()));
-        model.setBrand(new Brand(request.getBrandId()));
+        model.setAutomaker(request.getAutomaker());
+        model.setCollection(request.getCollection());
+        model.setBrand(request.getBrand());
         return modelRepository.save(model);
     }
 
