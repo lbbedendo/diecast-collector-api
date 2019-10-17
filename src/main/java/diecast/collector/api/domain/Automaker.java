@@ -18,6 +18,10 @@ public class Automaker {
 
     public Automaker() {}
 
+    public Automaker(Integer id) {
+        this.id = id;
+    }
+
     public Automaker(@NotNull String name, String country) {
         this.name = name;
         this.country = country;

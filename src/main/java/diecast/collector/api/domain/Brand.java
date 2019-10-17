@@ -15,6 +15,10 @@ public class Brand {
 
     public Brand() {}
 
+    public Brand(Integer id) {
+        this.id = id;
+    }
+
     public Brand(@NotNull String name) {
         this.name = name;
     }

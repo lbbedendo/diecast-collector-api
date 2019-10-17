@@ -1,8 +1,10 @@
 package diecast.collector.api.domain;
 
+import diecast.collector.api.dto.ModelSaveRequest;
 import diecast.collector.api.enums.ModelScale;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -12,7 +14,7 @@ public class Model {
     private Integer id;
 
     @Column(name = "name")
-    @NotNull
+    @NotEmpty
     private String name;
 
     @Column(name = "model_year")
@@ -38,6 +40,10 @@ public class Model {
     private Brand brand;
 
     public Model() {}
+
+    public Model(Integer id) {
+        this.id = id;
+    }
 
     public Model(@NotNull String name,
                  Integer modelYear,

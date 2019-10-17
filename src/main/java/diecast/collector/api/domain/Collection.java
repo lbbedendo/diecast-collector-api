@@ -18,6 +18,10 @@ public class Collection {
 
     public Collection() {}
 
+    public Collection(Integer id) {
+        this.id = id;
+    }
+
     public Collection(@NotNull String name, Integer year) {
         this.name = name;
         this.year = year;
