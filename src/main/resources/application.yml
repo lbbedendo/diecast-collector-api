@@ -18,4 +18,4 @@ jpa:
       hibernate:
         hbm2ddl:
           auto: update
-
+        show_sql: true
