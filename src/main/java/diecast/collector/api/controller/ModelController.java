@@ -7,6 +7,7 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +37,7 @@ public class ModelController {
     }
 
     @Post("/")
-    public HttpResponse<Model> create(ModelSaveRequest request) {
+    public HttpResponse<Model> create(@Valid @Body ModelSaveRequest request) {
         var model = modelService.create(request);
 
         return HttpResponse
@@ -45,7 +46,7 @@ public class ModelController {
 
     @Put("/{id}")
     @Transactional
-    public HttpResponse<Model> update(Integer id, ModelSaveRequest request) {
+    public HttpResponse<Model> update(Integer id, @Valid @Body ModelSaveRequest request) {
         var model = modelService.getById(id).orElse(null);
 
         return Objects.nonNull(model)
