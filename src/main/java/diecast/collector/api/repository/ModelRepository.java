@@ -12,15 +12,15 @@ import java.util.Optional;
 public interface ModelRepository extends CrudRepository<Model, Integer> {
     @NonNull
     @Override
-    @Join(value = "automaker", type = Join.Type.FETCH)
-    @Join(value = "collection", type = Join.Type.FETCH)
-    @Join(value = "brand", type = Join.Type.FETCH)
+    @Join(value = "automaker", type = Join.Type.LEFT_FETCH)
+    @Join(value = "collection", type = Join.Type.LEFT_FETCH)
+    @Join(value = "brand", type = Join.Type.LEFT_FETCH)
     Iterable<Model> findAll();
 
     @NonNull
     @Override
-    @Join(value = "automaker", type = Join.Type.FETCH)
-    @Join(value = "collection", type = Join.Type.FETCH)
-    @Join(value = "brand", type = Join.Type.FETCH)
+    @Join(value = "automaker", type = Join.Type.LEFT_FETCH)
+    @Join(value = "collection", type = Join.Type.LEFT_FETCH)
+    @Join(value = "brand", type = Join.Type.LEFT_FETCH)
     Optional<Model> findById(@NonNull Integer id);
 }
