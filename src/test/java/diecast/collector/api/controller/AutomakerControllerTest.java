@@ -31,7 +31,7 @@ public class AutomakerControllerTest {
     }
 
     @Test
-    public void createAutomaker_badRequest_whenNameIsNull() {
+    public void createAutomaker_Exception_whenNameIsNull() {
         var request = new AutomakerSaveRequest(null, "Brazil");
         assertThatExceptionOfType(HttpClientResponseException.class)
                 .isThrownBy(() -> client.create(request))
@@ -39,7 +39,7 @@ public class AutomakerControllerTest {
     }
 
     @Test
-    public void createAutomaker_badRequest_whenNameIsBlank() {
+    public void createAutomaker_Exception_whenNameIsBlank() {
         var request = new AutomakerSaveRequest("", "Brazil");
         assertThatExceptionOfType(HttpClientResponseException.class)
                 .isThrownBy(() -> client.create(request))

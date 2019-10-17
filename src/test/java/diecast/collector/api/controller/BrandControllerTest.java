@@ -29,7 +29,7 @@ public class BrandControllerTest {
     }
 
     @Test
-    public void createBrand_badRequest_whenNameIsNull() {
+    public void createBrand_Exception_whenNameIsNull() {
         var request = new BrandSaveRequest(null);
         assertThatExceptionOfType(HttpClientResponseException.class)
                 .isThrownBy(() -> client.create(request))
@@ -37,7 +37,7 @@ public class BrandControllerTest {
     }
 
     @Test
-    public void createBrand_badRequest_whenNameIsBlank() {
+    public void createBrand_Exception_whenNameIsBlank() {
         var request = new BrandSaveRequest("");
         assertThatExceptionOfType(HttpClientResponseException.class)
                 .isThrownBy(() -> client.create(request))

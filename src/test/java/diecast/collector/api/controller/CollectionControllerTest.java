@@ -31,7 +31,7 @@ public class CollectionControllerTest {
     }
 
     @Test
-    public void createCollection_badRequest_whenNameIsNull() {
+    public void createCollection_Exception_whenNameIsNull() {
         var request = new CollectionSaveRequest(null, 2018);
         assertThatExceptionOfType(HttpClientResponseException.class)
                 .isThrownBy(() -> client.create(request))
@@ -39,7 +39,7 @@ public class CollectionControllerTest {
     }
 
     @Test
-    public void createCollection_badRequest_whenNameIsBlank() {
+    public void createCollection_Exception_whenNameIsBlank() {
         var request = new CollectionSaveRequest("", 2018);
         assertThatExceptionOfType(HttpClientResponseException.class)
                 .isThrownBy(() -> client.create(request))
