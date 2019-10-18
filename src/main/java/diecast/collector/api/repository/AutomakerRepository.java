@@ -2,8 +2,8 @@ package diecast.collector.api.repository;
 
 import diecast.collector.api.domain.Automaker;
 import io.micronaut.data.annotation.Repository;
-import io.micronaut.data.repository.CrudRepository;
+import io.micronaut.data.jpa.repository.JpaRepository;
 
 @Repository
-public interface AutomakerRepository extends CrudRepository<Automaker, Integer> {
+public interface AutomakerRepository extends JpaRepository<Automaker, Integer> {
 }

@@ -1,6 +1,5 @@
 package diecast.collector.api.service;
 
-import com.google.common.collect.Lists;
 import diecast.collector.api.domain.Model;
 import diecast.collector.api.dto.ModelSaveRequest;
 import diecast.collector.api.repository.ModelRepository;
@@ -22,7 +21,7 @@ public class ModelService {
     }
 
     public List<Model> getAll() {
-        return Lists.newArrayList(modelRepository.findAll());
+        return modelRepository.findAll();
     }
 
     public Model create(ModelSaveRequest request) {

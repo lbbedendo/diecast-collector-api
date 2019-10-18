@@ -1,6 +1,5 @@
 package diecast.collector.api.service;
 
-import com.google.common.collect.Lists;
 import diecast.collector.api.domain.Automaker;
 import diecast.collector.api.dto.AutomakerSaveRequest;
 import diecast.collector.api.repository.AutomakerRepository;
@@ -22,7 +21,7 @@ public class AutomakerService {
     }
 
     public List<Automaker> getAll() {
-        return Lists.newArrayList(automakerRepository.findAll());
+        return automakerRepository.findAll();
     }
 
     public Automaker create(AutomakerSaveRequest request) {

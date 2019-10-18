@@ -1,6 +1,5 @@
 package diecast.collector.api.service;
 
-import com.google.common.collect.Lists;
 import diecast.collector.api.domain.Collection;
 import diecast.collector.api.dto.CollectionSaveRequest;
 import diecast.collector.api.repository.CollectionRepository;
@@ -22,7 +21,7 @@ public class CollectionService {
     }
 
     public List<Collection> getAll() {
-        return Lists.newArrayList(collectionRepository.findAll());
+        return collectionRepository.findAll();
     }
 
     public Collection create(CollectionSaveRequest request) {

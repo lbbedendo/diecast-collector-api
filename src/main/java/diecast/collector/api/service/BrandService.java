@@ -1,6 +1,5 @@
 package diecast.collector.api.service;
 
-import com.google.common.collect.Lists;
 import diecast.collector.api.domain.Brand;
 import diecast.collector.api.dto.BrandSaveRequest;
 import diecast.collector.api.repository.BrandRepository;
@@ -18,7 +17,7 @@ public class BrandService {
     }
 
     public List<Brand> getAll() {
-        return Lists.newArrayList(brandRepository.findAll());
+        return brandRepository.findAll();
     }
 
     public Optional<Brand> getById(Integer id) {

@@ -2,8 +2,8 @@ package diecast.collector.api.repository;
 
 import diecast.collector.api.domain.Brand;
 import io.micronaut.data.annotation.Repository;
-import io.micronaut.data.repository.CrudRepository;
+import io.micronaut.data.jpa.repository.JpaRepository;
 
 @Repository
-public interface BrandRepository extends CrudRepository<Brand, Integer> {
+public interface BrandRepository extends JpaRepository<Brand, Integer> {
 }
