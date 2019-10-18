@@ -2,6 +2,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "5.0.0"
     id "application"
     id "net.ltgt.apt-eclipse" version "0.21"
+    id 'nu.studer.jooq' version '3.0.3'
 }
 
 
@@ -57,6 +58,7 @@ dependencies {
     compile "io.micronaut.configuration:micronaut-hibernate-validator"
     compile "io.micronaut.configuration:micronaut-flyway"
     runtime "org.postgresql:postgresql:42.2.1"
+    jooqRuntime "org.postgresql:postgresql:42.2.1"
     runtime "com.h2database:h2"
     compile "io.micronaut.configuration:micronaut-jooq"
 }
@@ -71,6 +73,39 @@ test {
 
 shadowJar {
     mergeServiceFiles()
+}
+
+jooq {
+    version = '3.11.11'
+    edition = 'OSS'
+    diecastCollector(sourceSets.main) {
+        jdbc {
+            driver = 'org.postgresql.Driver'
+            url = 'jdbc:postgresql://localhost:5432/diecast_collector_dev'
+            user = 'diecast_collector'
+            password = 'diecast_collector'
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            strategy {
+                name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+            }
+            database {
+                name = 'org.jooq.meta.postgres.PostgresDatabase'
+                inputSchema = 'dc'
+            }
+            generate {
+                relations = true
+                deprecated = false
+                records = true
+                immutablePojos = true
+                fluentSetters = true
+            }
+            target {
+                packageName = 'diecast.collector.api'
+            }
+        }
+    }
 }
 
 run.classpath += configurations.developmentOnly
