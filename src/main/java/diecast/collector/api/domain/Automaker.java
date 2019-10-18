@@ -9,7 +9,7 @@ public class Automaker {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name", length = 100)
+    @Column(name = "name")
     @NotNull
     private String name;
 
