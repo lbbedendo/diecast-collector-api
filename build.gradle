@@ -58,7 +58,7 @@ dependencies {
     compile "io.micronaut.configuration:micronaut-flyway"
     runtime "org.postgresql:postgresql:42.2.1"
     runtime "com.h2database:h2"
-    compile "com.google.guava:guava:28.1-jre"
+    compile "io.micronaut.configuration:micronaut-jooq"
 }
 
 test.classpath += configurations.developmentOnly

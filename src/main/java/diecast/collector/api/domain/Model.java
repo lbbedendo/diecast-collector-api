@@ -1,6 +1,5 @@
 package diecast.collector.api.domain;
 
-import diecast.collector.api.dto.ModelSaveRequest;
 import diecast.collector.api.enums.ModelScale;
 
 import javax.persistence.*;
@@ -8,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(schema = "dc", name = "model")
 public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
