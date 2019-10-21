@@ -1,6 +1,7 @@
 package diecast.collector.api.controller;
 
 import diecast.collector.api.domain.Automaker;
+import diecast.collector.api.dto.filters.AutomakerFilters;
 import diecast.collector.api.dto.AutomakerSaveRequest;
 import diecast.collector.api.service.AutomakerService;
 import io.micronaut.http.HttpResponse;
@@ -31,9 +32,9 @@ public class AutomakerController {
                 .notFound();
     }
 
-    @Get("/")
-    public List<Automaker> getAll() {
-        return automakerService.getAll();
+    @Get("/{?filters*}")
+    public List<Automaker> getAll(AutomakerFilters filters) {
+        return automakerService.findAll(filters);
     }
 
     @Post("/")
