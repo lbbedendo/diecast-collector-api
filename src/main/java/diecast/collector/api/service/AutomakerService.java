@@ -3,7 +3,7 @@ package diecast.collector.api.service;
 import diecast.collector.api.domain.Automaker;
 import diecast.collector.api.dto.AutomakerSaveRequest;
 import diecast.collector.api.dto.filters.AutomakerFilters;
-import diecast.collector.api.repository.AbstractAutomakerRepository;
+import diecast.collector.api.repository.AutomakerRepository;
 
 import javax.inject.Singleton;
 import java.util.List;
@@ -11,9 +11,9 @@ import java.util.Optional;
 
 @Singleton
 public class AutomakerService {
-    private AbstractAutomakerRepository automakerRepository;
+    private AutomakerRepository automakerRepository;
 
-    public AutomakerService(AbstractAutomakerRepository automakerRepository) {
+    public AutomakerService(AutomakerRepository automakerRepository) {
         this.automakerRepository = automakerRepository;
     }
 

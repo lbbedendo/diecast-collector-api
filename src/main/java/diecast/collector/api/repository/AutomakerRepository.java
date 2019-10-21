@@ -11,10 +11,10 @@ import java.util.List;
 import static diecast.collector.api.tables.Automaker.AUTOMAKER;
 
 @Repository
-public abstract class AbstractAutomakerRepository implements JpaRepository<Automaker, Integer> {
+public abstract class AutomakerRepository implements JpaRepository<Automaker, Integer> {
     private DSLContext dslContext;
 
-    public AbstractAutomakerRepository(DSLContext dslContext) {
+    public AutomakerRepository(DSLContext dslContext) {
         this.dslContext = dslContext;
     }
 
