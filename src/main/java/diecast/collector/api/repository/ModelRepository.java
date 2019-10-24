@@ -45,6 +45,7 @@ public abstract class ModelRepository implements JpaRepository<Model, Integer> {
                         DSL.count(AUTOMAKER).as("quantity"))
                 .from(MODEL)
                 .join(AUTOMAKER).on(MODEL.AUTOMAKER_ID.eq(AUTOMAKER.ID))
+                .groupBy(AUTOMAKER.NAME)
                 .fetchInto(ModelQuantityByAutomakerResponse.class);
     }
 }
