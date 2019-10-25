@@ -45,6 +45,7 @@ class ModelRepositoryTest {
                 new Model("240z", 1970, SCALE_1_64, null, datsun, wanganMidnight, null),
                 new Model("510", 1974, SCALE_1_64, null, datsun, null, null)));
         modelRepository.save(new Model("911", 2018, SCALE_1_64, null, porsche, factoryFresh, null));
+        modelRepository.save(new Model("SP2", null, SCALE_1_64, null, null, null, null));
     }
 
     @Test
@@ -56,6 +57,7 @@ class ModelRepositoryTest {
                         ModelQuantityByAutomakerResponse::getAutomakerName,
                         ModelQuantityByAutomakerResponse::getQuantity)
                 .containsExactlyInAnyOrder(
+                        tuple(null, 1),
                         tuple("Honda", 2),
                         tuple("Datsun", 2),
                         tuple("Porsche", 1));
@@ -70,7 +72,7 @@ class ModelRepositoryTest {
                         ModelQuantityByCollectionResponse::getCollectionName,
                         ModelQuantityByCollectionResponse::getQuantity)
                 .containsExactlyInAnyOrder(
-                        tuple(null, 1),
+                        tuple(null, 2),
                         tuple("Factory Fresh", 3),
                         tuple("Wangan Midnight", 1));
     }
