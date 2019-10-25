@@ -23,6 +23,10 @@ public class Collection {
         this.id = id;
     }
 
+    public Collection(@NotNull String name) {
+        this.name = name;
+    }
+
     public Collection(@NotNull String name, Integer year) {
         this.name = name;
         this.year = year;

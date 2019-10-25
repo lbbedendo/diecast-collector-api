@@ -28,6 +28,6 @@ public class DashboardService {
     }
 
     private List<ModelQuantityByCollectionResponse> loadModelQuantityByCollection() {
-        return List.of();
+        return modelRepository.loadModelQuantityByCollection();
     }
 }

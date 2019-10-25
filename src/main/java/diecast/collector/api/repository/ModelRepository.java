@@ -2,7 +2,7 @@ package diecast.collector.api.repository;
 
 import diecast.collector.api.domain.Model;
 import diecast.collector.api.dto.response.ModelQuantityByAutomakerResponse;
-import diecast.collector.api.tables.Automaker;
+import diecast.collector.api.dto.response.ModelQuantityByCollectionResponse;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.data.annotation.Join;
 import io.micronaut.data.annotation.Repository;
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static diecast.collector.api.tables.Automaker.AUTOMAKER;
+import static diecast.collector.api.tables.Collection.COLLECTION;
 import static diecast.collector.api.tables.Model.MODEL;
 
 @Repository
@@ -47,5 +48,16 @@ public abstract class ModelRepository implements JpaRepository<Model, Integer> {
                 .join(AUTOMAKER).on(MODEL.AUTOMAKER_ID.eq(AUTOMAKER.ID))
                 .groupBy(AUTOMAKER.NAME)
                 .fetchInto(ModelQuantityByAutomakerResponse.class);
+    }
+
+    public List<ModelQuantityByCollectionResponse> loadModelQuantityByCollection() {
+        return dslContext
+                .select(
+                        COLLECTION.NAME.as("collectionName"),
+                        DSL.count().as("quantity"))
+                .from(MODEL)
+                .leftJoin(COLLECTION).on(MODEL.COLLECTION_ID.eq(COLLECTION.ID))
+                .groupBy(COLLECTION.NAME)
+                .fetchInto(ModelQuantityByCollectionResponse.class);
     }
 }
