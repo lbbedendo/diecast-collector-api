@@ -1,5 +1,6 @@
 package diecast.collector.api.controller;
 
+import diecast.collector.api.api.CollectionApi;
 import diecast.collector.api.domain.Collection;
 import diecast.collector.api.dto.CollectionSaveRequest;
 import diecast.collector.api.service.CollectionService;
@@ -13,14 +14,14 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller("/collection")
-public class CollectionController {
+public class CollectionController implements CollectionApi {
     private CollectionService collectionService;
 
     public CollectionController(CollectionService collectionService) {
         this.collectionService = collectionService;
     }
 
-    @Get("/{id}")
+    @Override
     public HttpResponse<Collection> getById(Integer id) {
         var collection = collectionService.getById(id).orElse(null);
 
@@ -31,12 +32,12 @@ public class CollectionController {
                 .notFound();
     }
 
-    @Get("/")
+    @Override
     public List<Collection> getAll() {
         return collectionService.getAll();
     }
 
-    @Post("/")
+    @Override
     public HttpResponse<Collection> create(@Body @Valid CollectionSaveRequest request) {
         var collection = collectionService.create(request);
 
@@ -44,7 +45,7 @@ public class CollectionController {
                 .created(collection, location(collection.getId()));
     }
 
-    @Put("/{id}")
+    @Override
     @Transactional
     public HttpResponse<Collection> update(Integer id, @Body @Valid CollectionSaveRequest request) {
         var collection = collectionService.getById(id).orElse(null);
@@ -57,7 +58,7 @@ public class CollectionController {
                 .notFound();
     }
 
-    @Delete("/{id}")
+    @Override
     @Transactional
     public HttpResponse<Collection> delete(Integer id) {
         var collection = collectionService.getById(id).orElse(null);
