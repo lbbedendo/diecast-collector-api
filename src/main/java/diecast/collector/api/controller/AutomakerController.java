@@ -1,5 +1,6 @@
 package diecast.collector.api.controller;
 
+import diecast.collector.api.api.AutomakerApi;
 import diecast.collector.api.domain.Automaker;
 import diecast.collector.api.dto.filters.AutomakerFilters;
 import diecast.collector.api.dto.AutomakerSaveRequest;
@@ -14,14 +15,14 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller("/automaker")
-public class AutomakerController {
+public class AutomakerController implements AutomakerApi {
     private AutomakerService automakerService;
 
     public AutomakerController(AutomakerService automakerService) {
         this.automakerService = automakerService;
     }
 
-    @Get("/{id}")
+    @Override
     public HttpResponse<Automaker> getById(Integer id) {
         var automaker = automakerService.getById(id).orElse(null);
 
@@ -32,12 +33,12 @@ public class AutomakerController {
                 .notFound();
     }
 
-    @Get("/{?filters*}")
+    @Override
     public List<Automaker> getAll(AutomakerFilters filters) {
         return automakerService.findAll(filters);
     }
 
-    @Post("/")
+    @Override
     public HttpResponse<Automaker> save(@Body @Valid AutomakerSaveRequest request) {
         var automaker = automakerService.create(request);
 
@@ -45,7 +46,7 @@ public class AutomakerController {
                 .created(automaker, location(automaker.getId()));
     }
 
-    @Put("/{id}")
+    @Override
     @Transactional
     public HttpResponse<Automaker> update(Integer id, @Body @Valid AutomakerSaveRequest request) {
         var automaker = automakerService.getById(id).orElse(null);
@@ -58,7 +59,7 @@ public class AutomakerController {
                 .notFound();
     }
 
-    @Delete("/{id}")
+    @Override
     @Transactional
     public HttpResponse<Automaker> delete(Integer id) {
         var automaker = automakerService.getById(id).orElse(null);
