@@ -1,5 +1,6 @@
 package diecast.collector.api.controller;
 
+import diecast.collector.api.api.BrandApi;
 import diecast.collector.api.domain.Brand;
 import diecast.collector.api.dto.BrandSaveRequest;
 import diecast.collector.api.service.BrandService;
@@ -13,14 +14,14 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller("/brand")
-public class BrandController {
+public class BrandController implements BrandApi {
     private BrandService brandService;
 
     public BrandController(BrandService brandService) {
         this.brandService = brandService;
     }
 
-    @Get("/{id}")
+    @Override
     public HttpResponse<Brand> getById(Integer id) {
         var brand = brandService.getById(id).orElse(null);
 
@@ -31,12 +32,12 @@ public class BrandController {
                 .notFound();
     }
 
-    @Get("/")
+    @Override
     public List<Brand> getAll() {
         return brandService.getAll();
     }
 
-    @Post("/")
+    @Override
     public HttpResponse<Brand> create(@Body @Valid BrandSaveRequest request) {
         var brand = brandService.create(request);
 
@@ -44,7 +45,7 @@ public class BrandController {
                 .created(brand, location(brand.getId()));
     }
 
-    @Put("/{id}")
+    @Override
     @Transactional
     public HttpResponse<Brand> update(Integer id, @Body @Valid BrandSaveRequest request) {
         var brand = brandService.getById(id).orElse(null);
@@ -57,7 +58,7 @@ public class BrandController {
                 .notFound();
     }
 
-    @Delete("/{id}")
+    @Override
     @Transactional
     public HttpResponse<Brand> delete(Integer id) {
         var brand = brandService.getById(id).orElse(null);
