@@ -1,5 +1,6 @@
 package diecast.collector.api.controller;
 
+import diecast.collector.api.api.ModelApi;
 import diecast.collector.api.domain.Model;
 import diecast.collector.api.dto.ModelSaveRequest;
 import diecast.collector.api.service.ModelService;
@@ -13,14 +14,14 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller("/model")
-public class ModelController {
+public class ModelController implements ModelApi {
     private ModelService modelService;
 
     public ModelController(ModelService modelService) {
         this.modelService = modelService;
     }
 
-    @Get("/{id}")
+    @Override
     public HttpResponse<Model> getById(Integer id) {
         var model = modelService.getById(id).orElse(null);
 
@@ -31,12 +32,12 @@ public class ModelController {
                 .notFound();
     }
 
-    @Get("/")
+    @Override
     public List<Model> getAll() {
         return modelService.getAll();
     }
 
-    @Post("/")
+    @Override
     public HttpResponse<Model> create(@Valid @Body ModelSaveRequest request) {
         var model = modelService.create(request);
 
@@ -44,7 +45,7 @@ public class ModelController {
                 .created(model, location(model.getId()));
     }
 
-    @Put("/{id}")
+    @Override
     @Transactional
     public HttpResponse<Model> update(Integer id, @Valid @Body ModelSaveRequest request) {
         var model = modelService.getById(id).orElse(null);
@@ -57,7 +58,7 @@ public class ModelController {
                 .notFound();
     }
 
-    @Delete("/{id}")
+    @Override
     @Transactional
     public HttpResponse<Model> delete(Integer id) {
         var model = modelService.getById(id).orElse(null);
