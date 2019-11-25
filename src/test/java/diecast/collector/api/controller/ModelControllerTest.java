@@ -114,7 +114,7 @@ public class ModelControllerTest {
 
     private Automaker createAutomaker(String name, String country) {
         var request = new AutomakerSaveRequest(name, country);
-        var response = automakerClient.save(request);
+        var response = automakerClient.create(request);
         return response.body();
     }
 

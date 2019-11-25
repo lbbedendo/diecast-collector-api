@@ -39,7 +39,7 @@ public class AutomakerController implements AutomakerApi {
     }
 
     @Override
-    public HttpResponse<Automaker> save(@Body @Valid AutomakerSaveRequest request) {
+    public HttpResponse<Automaker> create(@Body @Valid AutomakerSaveRequest request) {
         var automaker = automakerService.create(request);
 
         return HttpResponse

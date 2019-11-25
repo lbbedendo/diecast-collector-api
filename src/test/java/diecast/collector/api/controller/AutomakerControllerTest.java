@@ -21,7 +21,7 @@ public class AutomakerControllerTest {
     @Test
     public void createAutomaker_created_whenBodyIsValid() {
         var request = new AutomakerSaveRequest("Honda", "Japan");
-        var response = client.save(request);
+        var response = client.create(request);
         assertThat(response.code()).isEqualTo(HttpStatus.CREATED.getCode());
         var body = response.body();
         assertThat(body).isNotNull();
@@ -34,7 +34,7 @@ public class AutomakerControllerTest {
     public void createAutomaker_Exception_whenNameIsNull() {
         var request = new AutomakerSaveRequest(null, "Brazil");
         assertThatExceptionOfType(HttpClientResponseException.class)
-                .isThrownBy(() -> client.save(request))
+                .isThrownBy(() -> client.create(request))
                 .withMessage("request.name: não pode estar em branco");
     }
 
@@ -42,13 +42,13 @@ public class AutomakerControllerTest {
     public void createAutomaker_Exception_whenNameIsBlank() {
         var request = new AutomakerSaveRequest("", "Brazil");
         assertThatExceptionOfType(HttpClientResponseException.class)
-                .isThrownBy(() -> client.save(request))
+                .isThrownBy(() -> client.create(request))
                 .withMessage("request.name: não pode estar em branco");
     }
 
     @Test
     public void updateAutomaker_ok_whenBodyIsValid() {
-        var responseCreated = client.save(new AutomakerSaveRequest("Chvrolet", "Canada"));
+        var responseCreated = client.create(new AutomakerSaveRequest("Chvrolet", "Canada"));
         assertThat(responseCreated.code()).isEqualTo(HttpStatus.CREATED.getCode());
         var itemCreated = responseCreated.body();
         assertThat(itemCreated).isNotNull();
@@ -69,7 +69,7 @@ public class AutomakerControllerTest {
 
     @Test
     public void delete_ok_whenAutomakerExists() {
-        var responseCreated = client.save(new AutomakerSaveRequest("BMW", "Germany"));
+        var responseCreated = client.create(new AutomakerSaveRequest("BMW", "Germany"));
         assertThat(responseCreated.code()).isEqualTo(HttpStatus.CREATED.getCode());
         var itemCreated = responseCreated.body();
         assertThat(itemCreated).isNotNull();
@@ -85,7 +85,7 @@ public class AutomakerControllerTest {
 
     @Test
     public void getById_ok_whenAutomakerExists() {
-        var responseCreated = client.save(new AutomakerSaveRequest("Porsche", "Germany"));
+        var responseCreated = client.create(new AutomakerSaveRequest("Porsche", "Germany"));
         assertThat(responseCreated.code()).isEqualTo(HttpStatus.CREATED.getCode());
         var itemCreated = responseCreated.body();
         assertThat(itemCreated).isNotNull();

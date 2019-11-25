@@ -17,7 +17,7 @@ public interface AutomakerApi {
     List<Automaker> getAll(AutomakerFilters filters);
 
     @Post("/")
-    HttpResponse<Automaker> save(@Body @Valid AutomakerSaveRequest request);
+    HttpResponse<Automaker> create(@Body @Valid AutomakerSaveRequest request);
 
     @Put("/{id}")
     HttpResponse<Automaker> update(Integer id, @Body @Valid AutomakerSaveRequest request);
