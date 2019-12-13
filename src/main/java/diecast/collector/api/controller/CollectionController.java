@@ -5,13 +5,13 @@ import diecast.collector.api.domain.Collection;
 import diecast.collector.api.dto.CollectionSaveRequest;
 import diecast.collector.api.service.CollectionService;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.*;
+import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Controller;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 
 @Controller("/collection")
 public class CollectionController implements CollectionApi {
@@ -23,11 +23,11 @@ public class CollectionController implements CollectionApi {
 
     @Override
     public HttpResponse<Collection> getById(Integer id) {
-        var collection = collectionService.getById(id).orElse(null);
+        var collection = collectionService.getById(id);
 
-        return Objects.nonNull(collection)
+        return collection.isPresent()
                 ? HttpResponse
-                .ok(collection)
+                .ok(collection.get())
                 : HttpResponse
                 .notFound();
     }
@@ -48,12 +48,12 @@ public class CollectionController implements CollectionApi {
     @Override
     @Transactional
     public HttpResponse<Collection> update(Integer id, @Body @Valid CollectionSaveRequest request) {
-        var collection = collectionService.getById(id).orElse(null);
+        var collection = collectionService.getById(id);
 
-        return Objects.nonNull(collection)
+        return collection.isPresent()
                 ? HttpResponse
-                .ok(collectionService.update(collection, request))
-                .headers(headers -> headers.location(location(collection.getId())))
+                .ok(collectionService.update(collection.get(), request))
+                .headers(headers -> headers.location(location(collection.get().getId())))
                 : HttpResponse
                 .notFound();
     }
@@ -61,10 +61,11 @@ public class CollectionController implements CollectionApi {
     @Override
     @Transactional
     public HttpResponse<Collection> delete(Integer id) {
-        var collection = collectionService.getById(id).orElse(null);
-        if (collection == null) {
+        var collectionOptional = collectionService.getById(id);
+        if (collectionOptional.isEmpty()) {
             return HttpResponse.notFound();
         }
+        var collection = collectionOptional.get();
         collectionService.delete(collection);
         return HttpResponse.ok(collection);
     }

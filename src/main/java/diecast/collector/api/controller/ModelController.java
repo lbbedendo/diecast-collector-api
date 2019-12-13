@@ -23,11 +23,11 @@ public class ModelController implements ModelApi {
 
     @Override
     public HttpResponse<Model> getById(Integer id) {
-        var model = modelService.getById(id).orElse(null);
+        var model = modelService.getById(id);
 
-        return Objects.nonNull(model)
+        return model.isPresent()
                 ? HttpResponse
-                .ok(model)
+                .ok(model.get())
                 : HttpResponse
                 .notFound();
     }
@@ -48,12 +48,12 @@ public class ModelController implements ModelApi {
     @Override
     @Transactional
     public HttpResponse<Model> update(Integer id, @Valid @Body ModelSaveRequest request) {
-        var model = modelService.getById(id).orElse(null);
+        var model = modelService.getById(id);
 
-        return Objects.nonNull(model)
+        return model.isPresent()
                 ? HttpResponse
-                .ok(modelService.update(model, request))
-                .headers(headers -> headers.location(location(model.getId())))
+                .ok(modelService.update(model.get(), request))
+                .headers(headers -> headers.location(location(id)))
                 : HttpResponse
                 .notFound();
     }
@@ -61,10 +61,11 @@ public class ModelController implements ModelApi {
     @Override
     @Transactional
     public HttpResponse<Model> delete(Integer id) {
-        var model = modelService.getById(id).orElse(null);
-        if (model == null) {
+        var modelOptional = modelService.getById(id);
+        if (modelOptional.isEmpty()) {
             return HttpResponse.notFound();
         }
+        var model = modelOptional.get();
         modelService.delete(model);
         return HttpResponse.ok(model);
     }

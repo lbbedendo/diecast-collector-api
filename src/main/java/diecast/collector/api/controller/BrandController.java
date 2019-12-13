@@ -23,11 +23,11 @@ public class BrandController implements BrandApi {
 
     @Override
     public HttpResponse<Brand> getById(Integer id) {
-        var brand = brandService.getById(id).orElse(null);
+        var brand = brandService.getById(id);
 
-        return Objects.nonNull(brand)
+        return brand.isPresent()
                 ? HttpResponse
-                .ok(brand)
+                .ok(brand.get())
                 : HttpResponse
                 .notFound();
     }
@@ -48,12 +48,12 @@ public class BrandController implements BrandApi {
     @Override
     @Transactional
     public HttpResponse<Brand> update(Integer id, @Body @Valid BrandSaveRequest request) {
-        var brand = brandService.getById(id).orElse(null);
+        var brand = brandService.getById(id);
 
-        return Objects.nonNull(brand)
+        return brand.isPresent()
                 ? HttpResponse
-                .ok(brandService.update(brand, request))
-                .headers(headers -> headers.location(location(brand.getId())))
+                .ok(brandService.update(brand.get(), request))
+                .headers(headers -> headers.location(location(id)))
                 : HttpResponse
                 .notFound();
     }
@@ -61,10 +61,11 @@ public class BrandController implements BrandApi {
     @Override
     @Transactional
     public HttpResponse<Brand> delete(Integer id) {
-        var brand = brandService.getById(id).orElse(null);
-        if (brand == null) {
+        var brandOptional = brandService.getById(id);
+        if (brandOptional.isEmpty()) {
             return HttpResponse.notFound();
         }
+        var brand = brandOptional.get();
         brandService.delete(brand);
         return HttpResponse.ok(brand);
     }

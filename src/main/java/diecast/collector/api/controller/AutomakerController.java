@@ -2,17 +2,17 @@ package diecast.collector.api.controller;
 
 import diecast.collector.api.api.AutomakerApi;
 import diecast.collector.api.domain.Automaker;
-import diecast.collector.api.dto.filters.AutomakerFilters;
 import diecast.collector.api.dto.AutomakerSaveRequest;
+import diecast.collector.api.dto.filters.AutomakerFilters;
 import diecast.collector.api.service.AutomakerService;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.*;
+import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Controller;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 
 @Controller("/automaker")
 public class AutomakerController implements AutomakerApi {
@@ -24,11 +24,11 @@ public class AutomakerController implements AutomakerApi {
 
     @Override
     public HttpResponse<Automaker> getById(Integer id) {
-        var automaker = automakerService.getById(id).orElse(null);
+        var automaker = automakerService.getById(id);
 
-        return Objects.nonNull(automaker)
+        return automaker.isPresent()
                 ? HttpResponse
-                .ok(automaker)
+                .ok(automaker.get())
                 : HttpResponse
                 .notFound();
     }
@@ -49,11 +49,11 @@ public class AutomakerController implements AutomakerApi {
     @Override
     @Transactional
     public HttpResponse<Automaker> update(Integer id, @Body @Valid AutomakerSaveRequest request) {
-        var automaker = automakerService.getById(id).orElse(null);
+        var automaker = automakerService.getById(id);
 
-        return Objects.nonNull(automaker)
+        return automaker.isPresent()
                 ? HttpResponse
-                .ok(automakerService.update(automaker, request))
+                .ok(automakerService.update(automaker.get(), request))
                 .headers(headers -> headers.location(location(id)))
                 : HttpResponse
                 .notFound();
@@ -62,10 +62,11 @@ public class AutomakerController implements AutomakerApi {
     @Override
     @Transactional
     public HttpResponse<Automaker> delete(Integer id) {
-        var automaker = automakerService.getById(id).orElse(null);
-        if (automaker == null) {
+        var automakerOptional = automakerService.getById(id);
+        if (automakerOptional.isEmpty()) {
             return HttpResponse.notFound();
         }
+        var automaker = automakerOptional.get();
         automakerService.delete(automaker);
         return HttpResponse.ok(automaker);
     }

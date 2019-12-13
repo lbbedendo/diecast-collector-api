@@ -29,7 +29,7 @@ dependencies {
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
-    annotationProcessor "io.micronaut.data:micronaut-data-processor:1.0.0.M3"
+    annotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
     implementation "io.micronaut:micronaut-inject"
