@@ -2,7 +2,29 @@
 micronaut:
   application:
     name: diecast-collector-api
-
+  security:
+    enabled: true
+    oauth2:
+      enabled: true
+      clients:
+        google:
+          client-id: '${OAUTH_CLIENT_ID}'
+          client-secret: '${OAUTH_CLIENT_SECRET}'
+          openid:
+            issuer: 'https://accounts.google.com'
+    token:
+      jwt:
+        enabled: true
+        cookie:
+          enabled: true
+        signatures:
+          secret:
+            generator:
+              secret: '${JWT_GENERATOR_SIGNATURE_SECRET}'
+    endpoints:
+      logout:
+        enabled: true
+        get-allowed: true
 ---
 datasources.default: {}
 ---
