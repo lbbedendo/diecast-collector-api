@@ -10,6 +10,9 @@ Also check out the [Web App](https://github.com/lbbedendo/diecast-collector-app)
 - Testcontainers  
 - Gradle
 
+## Running the application
+1. Run docker-compose to setup a postgresql 12.5 instance `docker-compose up`
+
 ## Reference Documentation
 
 ### jdbc-hikari documentation
