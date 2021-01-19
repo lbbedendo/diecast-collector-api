@@ -1,10 +1,12 @@
 package diecast.collector.api.dto.filters;
 
+import io.micronaut.core.annotation.Introspected;
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
 
 import static diecast.collector.api.tables.Automaker.AUTOMAKER;
 
+@Introspected
 public class AutomakerFilters {
     private String name;
     private String country;

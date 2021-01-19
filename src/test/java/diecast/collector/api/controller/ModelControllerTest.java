@@ -1,18 +1,19 @@
 package diecast.collector.api.controller;
 
-import diecast.collector.api.client.AutomakerTestClient;
-import diecast.collector.api.client.ModelTestClient;
+import diecast.collector.api.api.AutomakerApi;
+import diecast.collector.api.api.ModelApi;
 import diecast.collector.api.domain.Automaker;
 import diecast.collector.api.domain.Model;
 import diecast.collector.api.dto.AutomakerSaveRequest;
 import diecast.collector.api.dto.ModelSaveRequest;
 import diecast.collector.api.enums.ModelScale;
 import io.micronaut.http.HttpStatus;
-import io.micronaut.http.client.exceptions.HttpClientResponseException;
-import io.micronaut.test.annotation.MicronautTest;
+import io.micronaut.http.client.annotation.Client;
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -20,9 +21,11 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @MicronautTest
 public class ModelControllerTest {
     @Inject
-    ModelTestClient client;
+    @Client("/model")
+    ModelApi client;
     @Inject
-    AutomakerTestClient automakerClient;
+    @Client("/automaker")
+    AutomakerApi automakerClient;
 
     @Test
     public void createModel_ok_whenBodyIsValid() {
@@ -40,9 +43,9 @@ public class ModelControllerTest {
     public void createModel_Exception_whenNameIsNull() {
         var request = new ModelSaveRequest();
         request.setModelYear(2018);
-        assertThatExceptionOfType(HttpClientResponseException.class)
+        assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> client.create(request))
-                .withMessage("request.name: não pode estar vazio");
+                .withMessage("create.request.name: must not be empty");
     }
 
     @Test
@@ -50,9 +53,9 @@ public class ModelControllerTest {
         var request = new ModelSaveRequest();
         request.setName("");
         request.setModelYear(2018);
-        assertThatExceptionOfType(HttpClientResponseException.class)
+        assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> client.create(request))
-                .withMessage("request.name: não pode estar vazio");
+                .withMessage("create.request.name: must not be empty");
     }
 
     @Test

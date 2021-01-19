@@ -1,5 +1,8 @@
 package diecast.collector.api.dto.response;
 
+import io.micronaut.core.annotation.Introspected;
+
+@Introspected
 public class ModelQuantityByCollectionResponse {
     private String collectionName;
     private Integer quantity;

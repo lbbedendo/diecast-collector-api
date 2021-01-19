@@ -1,7 +1,10 @@
 package diecast.collector.api.dto.response;
 
+import io.micronaut.core.annotation.Introspected;
+
 import java.util.List;
 
+@Introspected
 public class ModelsDashboardResponse {
     private List<ModelQuantityByAutomakerResponse> modelsByAutomaker;
     private List<ModelQuantityByCollectionResponse> modelsByCollection;

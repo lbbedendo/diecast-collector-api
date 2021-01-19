@@ -1,13 +1,14 @@
 package diecast.collector.api.controller;
 
-import diecast.collector.api.client.BrandTestClient;
+import diecast.collector.api.api.BrandApi;
 import diecast.collector.api.dto.BrandSaveRequest;
 import io.micronaut.http.HttpStatus;
-import io.micronaut.http.client.exceptions.HttpClientResponseException;
-import io.micronaut.test.annotation.MicronautTest;
+import io.micronaut.http.client.annotation.Client;
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -15,7 +16,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @MicronautTest
 public class BrandControllerTest {
     @Inject
-    BrandTestClient client;
+    @Client("/brand")
+    BrandApi client;
 
     @Test
     public void createBrand_created_whenBodyIsValid() {
@@ -31,17 +33,17 @@ public class BrandControllerTest {
     @Test
     public void createBrand_Exception_whenNameIsNull() {
         var request = new BrandSaveRequest(null);
-        assertThatExceptionOfType(HttpClientResponseException.class)
+        assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> client.create(request))
-                .withMessage("request.name: não pode estar em branco");
+                .withMessage("create.request.name: must not be blank");
     }
 
     @Test
     public void createBrand_Exception_whenNameIsBlank() {
         var request = new BrandSaveRequest("");
-        assertThatExceptionOfType(HttpClientResponseException.class)
+        assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> client.create(request))
-                .withMessage("request.name: não pode estar em branco");
+                .withMessage("create.request.name: must not be blank");
     }
 
     @Test

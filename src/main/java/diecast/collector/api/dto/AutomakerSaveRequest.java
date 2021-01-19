@@ -1,7 +1,10 @@
 package diecast.collector.api.dto;
 
+import io.micronaut.core.annotation.Introspected;
+
 import javax.validation.constraints.NotBlank;
 
+@Introspected
 public class AutomakerSaveRequest {
     @NotBlank
     private String name;

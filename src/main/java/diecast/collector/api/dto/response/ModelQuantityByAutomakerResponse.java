@@ -1,5 +1,8 @@
 package diecast.collector.api.dto.response;
 
+import io.micronaut.core.annotation.Introspected;
+
+@Introspected
 public class ModelQuantityByAutomakerResponse {
     private String automakerName;
     private Integer quantity;

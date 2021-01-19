@@ -1,14 +1,15 @@
 package diecast.collector.api.controller;
 
-import diecast.collector.api.client.CollectionTestClient;
+import diecast.collector.api.api.CollectionApi;
 import diecast.collector.api.domain.Collection;
 import diecast.collector.api.dto.CollectionSaveRequest;
 import io.micronaut.http.HttpStatus;
-import io.micronaut.http.client.exceptions.HttpClientResponseException;
-import io.micronaut.test.annotation.MicronautTest;
+import io.micronaut.http.client.annotation.Client;
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -16,7 +17,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @MicronautTest
 public class CollectionControllerTest {
     @Inject
-    CollectionTestClient client;
+    @Client("/collection")
+    CollectionApi client;
 
     @Test
     public void createCollection_created_whenBodyIsValid() {
@@ -33,17 +35,17 @@ public class CollectionControllerTest {
     @Test
     public void createCollection_Exception_whenNameIsNull() {
         var request = new CollectionSaveRequest(null, 2018);
-        assertThatExceptionOfType(HttpClientResponseException.class)
+        assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> client.create(request))
-                .withMessage("request.name: não pode estar em branco");
+                .withMessage("create.request.name: must not be blank");
     }
 
     @Test
     public void createCollection_Exception_whenNameIsBlank() {
         var request = new CollectionSaveRequest("", 2018);
-        assertThatExceptionOfType(HttpClientResponseException.class)
+        assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> client.create(request))
-                .withMessage("request.name: não pode estar em branco");
+                .withMessage("create.request.name: must not be blank");
     }
 
     @Test

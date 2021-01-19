@@ -5,7 +5,7 @@ import diecast.collector.api.domain.Collection;
 import diecast.collector.api.domain.Model;
 import diecast.collector.api.dto.response.ModelQuantityByAutomakerResponse;
 import diecast.collector.api.dto.response.ModelQuantityByCollectionResponse;
-import io.micronaut.test.annotation.MicronautTest;
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

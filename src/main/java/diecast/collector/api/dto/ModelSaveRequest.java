@@ -4,9 +4,11 @@ import diecast.collector.api.domain.Automaker;
 import diecast.collector.api.domain.Brand;
 import diecast.collector.api.domain.Collection;
 import diecast.collector.api.enums.ModelScale;
+import io.micronaut.core.annotation.Introspected;
 
 import javax.validation.constraints.NotEmpty;
 
+@Introspected
 public class ModelSaveRequest {
     @NotEmpty
     private String name;
