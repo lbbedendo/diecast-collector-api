@@ -2,7 +2,10 @@
 micronaut:
   application:
     name: diecast-collector-api
-
+  executors:
+    io:
+      type: fixed
+      nThreads: 75
 ---
 datasources.default: {}
 ---
@@ -14,6 +17,8 @@ datasources:
     password: ${JDBC_PASSWORD:diecast_collector}
 jpa:
   default:
+    packages-to-scan:
+      - 'diecast.collector.api.domain'
     properties:
       hibernate:
         hbm2ddl:
