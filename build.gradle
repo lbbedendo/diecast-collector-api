@@ -1,77 +1,41 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "5.0.0"
-    id "application"
-    id "net.ltgt.apt-idea" version "0.21"
-    id 'nu.studer.jooq' version '3.0.3'
+    id("com.github.johnrengelman.shadow") version "6.1.0"
+    id("io.micronaut.application") version "1.2.0"
+    id( "nu.studer.jooq") version "3.0.3"
 }
 
-
-
-version "0.1"
-group "diecast.collector.api"
+version = "0.1"
+group = "diecast.collector.api"
 
 repositories {
     mavenCentral()
-    maven { url "https://jcenter.bintray.com" }
+    jcenter()
 }
 
-configurations {
-    // for dependencies that are needed for development only
-    developmentOnly 
-}
-
-ext {
-    micronautDataVersion = "1.0.0.M3"
-    micronautVersion = "1.2.3"
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("diecast.collector.api.*")
+    }
 }
 
 dependencies {
-    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
-    annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut:micronaut-validation"
-    annotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
-    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
-    implementation "io.micronaut:micronaut-inject"
-    implementation "io.micronaut:micronaut-validation"
-    implementation "io.micronaut:micronaut-runtime"
-    implementation "javax.annotation:javax.annotation-api"
-    implementation "io.micronaut:micronaut-http-server-netty"
-    implementation "io.micronaut:micronaut-http-client"
-    implementation "io.micronaut.data:micronaut-data-hibernate-jpa:$micronautDataVersion", {
-        exclude group:'io.micronaut.configuration', module:'micronaut-hibernate-jpa'
-    }
-    compile "io.micronaut.configuration:micronaut-hibernate-jpa:1.2.1", {
-        exclude group:'io.micronaut.configuration', module:'micronaut-hibernate-jpa-spring'
-    }
-    runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
-    testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
-    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "io.micronaut.test:micronaut-test-junit5:1.1.1"
-    testCompile "org.mockito:mockito-junit-jupiter:2.22.0"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.1.0"
-    testCompile "org.assertj:assertj-core:3.11.1"
-    testCompile "org.junit.jupiter:junit-jupiter-params:5.4.2"
-    compile "io.micronaut.configuration:micronaut-jdbc-hikari"
-    compile "io.micronaut.configuration:micronaut-hibernate-validator"
-    compile "io.micronaut.configuration:micronaut-flyway"
-    runtime "org.postgresql:postgresql:42.2.1"
-    jooqRuntime "org.postgresql:postgresql:42.2.1"
-    compile "io.micronaut.configuration:micronaut-jooq"
-}
-
-test.classpath += configurations.developmentOnly
-
-mainClassName = "diecast.collector.api.Application"
-// use JUnit 5 platform
-test {
-    useJUnitPlatform()
-}
-
-shadowJar {
-    mergeServiceFiles()
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("javax.annotation:javax.annotation-api")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut.flyway:micronaut-flyway")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+    implementation("io.micronaut.sql:micronaut-jooq")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.postgresql:postgresql")
+    jooqRuntime("org.postgresql:postgresql:42.2.18")
+    testRuntimeOnly("org.testcontainers:postgresql")
+    testImplementation("org.assertj:assertj-core:3.11.1")
 }
 
 jooq {
@@ -91,7 +55,7 @@ jooq {
             }
             database {
                 name = 'org.jooq.meta.postgres.PostgresDatabase'
-                inputSchema = 'dc'
+                inputSchema = 'public'
             }
             generate {
                 relations = true
@@ -107,9 +71,12 @@ jooq {
     }
 }
 
-run.classpath += configurations.developmentOnly
-run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
-tasks.withType(JavaCompile){
-    options.encoding = "UTF-8"
-    options.compilerArgs.add('-parameters')
+
+application {
+    mainClass.set("diecast.collector.api.Application")
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
 }
