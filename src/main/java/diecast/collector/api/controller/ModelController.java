@@ -5,13 +5,13 @@ import diecast.collector.api.domain.Model;
 import diecast.collector.api.dto.ModelSaveRequest;
 import diecast.collector.api.service.ModelService;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.*;
+import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Controller;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 
 @Controller("/model")
 public class ModelController implements ModelApi {

@@ -3,7 +3,11 @@ package diecast.collector.api.api;
 import diecast.collector.api.domain.Model;
 import diecast.collector.api.dto.ModelSaveRequest;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.*;
+import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Delete;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.Put;
 
 import javax.validation.Valid;
 import java.util.List;
