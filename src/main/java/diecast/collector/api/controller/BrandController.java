@@ -23,13 +23,9 @@ public class BrandController implements BrandApi {
 
     @Override
     public HttpResponse<Brand> getById(Integer id) {
-        var brand = brandService.getById(id);
-
-        return brand.isPresent()
-                ? HttpResponse
-                .ok(brand.get())
-                : HttpResponse
-                .notFound();
+        return brandService.getById(id)
+                .map(HttpResponse::ok)
+                .orElseGet(HttpResponse::notFound);
     }
 
     @Override
@@ -40,34 +36,26 @@ public class BrandController implements BrandApi {
     @Override
     public HttpResponse<Brand> create(@Body @Valid BrandSaveRequest request) {
         var brand = brandService.create(request);
-
-        return HttpResponse
-                .created(brand, location(brand.getId()));
+        return HttpResponse.created(brand, location(brand.getId()));
     }
 
     @Override
     @Transactional
     public HttpResponse<Brand> update(Integer id, @Body @Valid BrandSaveRequest request) {
-        var brand = brandService.getById(id);
-
-        return brand.isPresent()
-                ? HttpResponse
-                .ok(brandService.update(brand.get(), request))
-                .headers(headers -> headers.location(location(id)))
-                : HttpResponse
-                .notFound();
+        return brandService.getById(id)
+                .map(brand -> HttpResponse.ok(brandService.update(brand, request)).headers(headers -> headers.location(location(id))))
+                .orElseGet(HttpResponse::notFound);
     }
 
     @Override
     @Transactional
     public HttpResponse<Brand> delete(Integer id) {
-        var brandOptional = brandService.getById(id);
-        if (brandOptional.isEmpty()) {
-            return HttpResponse.notFound();
-        }
-        var brand = brandOptional.get();
-        brandService.delete(brand);
-        return HttpResponse.ok(brand);
+        return brandService.getById(id)
+                .map(brand -> {
+                    brandService.delete(brand);
+                    return HttpResponse.ok(brand);
+                })
+                .orElseGet(HttpResponse::notFound);
     }
 
     private URI location(Integer id) {

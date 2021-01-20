@@ -24,13 +24,9 @@ public class AutomakerController implements AutomakerApi {
 
     @Override
     public HttpResponse<Automaker> getById(Integer id) {
-        var automaker = automakerService.getById(id);
-
-        return automaker.isPresent()
-                ? HttpResponse
-                .ok(automaker.get())
-                : HttpResponse
-                .notFound();
+        return automakerService.getById(id)
+                .map(HttpResponse::ok)
+                .orElseGet(HttpResponse::notFound);
     }
 
     @Override
@@ -41,34 +37,28 @@ public class AutomakerController implements AutomakerApi {
     @Override
     public HttpResponse<Automaker> create(@Body @Valid AutomakerSaveRequest request) {
         var automaker = automakerService.create(request);
-
-        return HttpResponse
-                .created(automaker, location(automaker.getId()));
+        return HttpResponse.created(automaker, location(automaker.getId()));
     }
 
     @Override
     @Transactional
     public HttpResponse<Automaker> update(Integer id, @Body @Valid AutomakerSaveRequest request) {
-        var automaker = automakerService.getById(id);
-
-        return automaker.isPresent()
-                ? HttpResponse
-                .ok(automakerService.update(automaker.get(), request))
-                .headers(headers -> headers.location(location(id)))
-                : HttpResponse
-                .notFound();
+        return automakerService.getById(id)
+                .map(automaker -> HttpResponse
+                        .ok(automakerService.update(automaker, request))
+                        .headers(headers -> headers.location(location(id))))
+                .orElseGet(HttpResponse::notFound);
     }
 
     @Override
     @Transactional
     public HttpResponse<Automaker> delete(Integer id) {
-        var automakerOptional = automakerService.getById(id);
-        if (automakerOptional.isEmpty()) {
-            return HttpResponse.notFound();
-        }
-        var automaker = automakerOptional.get();
-        automakerService.delete(automaker);
-        return HttpResponse.ok(automaker);
+        return automakerService.getById(id)
+                .map(automaker -> {
+                    automakerService.delete(automaker);
+                    return HttpResponse.ok(automaker);
+                })
+                .orElseGet(HttpResponse::notFound);
     }
 
     private URI location(Integer id) {

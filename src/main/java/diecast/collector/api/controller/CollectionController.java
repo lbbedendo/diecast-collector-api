@@ -23,13 +23,9 @@ public class CollectionController implements CollectionApi {
 
     @Override
     public HttpResponse<Collection> getById(Integer id) {
-        var collection = collectionService.getById(id);
-
-        return collection.isPresent()
-                ? HttpResponse
-                .ok(collection.get())
-                : HttpResponse
-                .notFound();
+        return collectionService.getById(id)
+                .map(HttpResponse::ok)
+                .orElseGet(HttpResponse::notFound);
     }
 
     @Override
@@ -40,34 +36,28 @@ public class CollectionController implements CollectionApi {
     @Override
     public HttpResponse<Collection> create(@Body @Valid CollectionSaveRequest request) {
         var collection = collectionService.create(request);
-
-        return HttpResponse
-                .created(collection, location(collection.getId()));
+        return HttpResponse.created(collection, location(collection.getId()));
     }
 
     @Override
     @Transactional
     public HttpResponse<Collection> update(Integer id, @Body @Valid CollectionSaveRequest request) {
-        var collection = collectionService.getById(id);
-
-        return collection.isPresent()
-                ? HttpResponse
-                .ok(collectionService.update(collection.get(), request))
-                .headers(headers -> headers.location(location(collection.get().getId())))
-                : HttpResponse
-                .notFound();
+        return collectionService.getById(id)
+                .map(collection -> HttpResponse
+                        .ok(collectionService.update(collection, request))
+                        .headers(headers -> headers.location(location(collection.getId()))))
+                .orElseGet(HttpResponse::notFound);
     }
 
     @Override
     @Transactional
     public HttpResponse<Collection> delete(Integer id) {
-        var collectionOptional = collectionService.getById(id);
-        if (collectionOptional.isEmpty()) {
-            return HttpResponse.notFound();
-        }
-        var collection = collectionOptional.get();
-        collectionService.delete(collection);
-        return HttpResponse.ok(collection);
+        return collectionService.getById(id)
+                .map(collection -> {
+                    collectionService.delete(collection);
+                    return HttpResponse.ok(collection);
+                })
+                .orElseGet(HttpResponse::notFound);
     }
 
     private URI location(Integer id) {

@@ -23,13 +23,9 @@ public class ModelController implements ModelApi {
 
     @Override
     public HttpResponse<Model> getById(Integer id) {
-        var model = modelService.getById(id);
-
-        return model.isPresent()
-                ? HttpResponse
-                .ok(model.get())
-                : HttpResponse
-                .notFound();
+        return modelService.getById(id)
+                .map(HttpResponse::ok)
+                .orElseGet(HttpResponse::notFound);
     }
 
     @Override
@@ -40,34 +36,26 @@ public class ModelController implements ModelApi {
     @Override
     public HttpResponse<Model> create(@Valid @Body ModelSaveRequest request) {
         var model = modelService.create(request);
-
-        return HttpResponse
-                .created(model, location(model.getId()));
+        return HttpResponse.created(model, location(model.getId()));
     }
 
     @Override
     @Transactional
     public HttpResponse<Model> update(Integer id, @Valid @Body ModelSaveRequest request) {
-        var model = modelService.getById(id);
-
-        return model.isPresent()
-                ? HttpResponse
-                .ok(modelService.update(model.get(), request))
-                .headers(headers -> headers.location(location(id)))
-                : HttpResponse
-                .notFound();
+        return modelService.getById(id)
+                .map(model -> HttpResponse.ok(modelService.update(model, request)))
+                .orElseGet(HttpResponse::notFound);
     }
 
     @Override
     @Transactional
     public HttpResponse<Model> delete(Integer id) {
-        var modelOptional = modelService.getById(id);
-        if (modelOptional.isEmpty()) {
-            return HttpResponse.notFound();
-        }
-        var model = modelOptional.get();
-        modelService.delete(model);
-        return HttpResponse.ok(model);
+        return modelService.getById(id)
+                .map(model -> {
+                    modelService.delete(model);
+                    return HttpResponse.ok(model);
+                })
+                .orElseGet(HttpResponse::notFound);
     }
 
     private URI location(Integer id) {
