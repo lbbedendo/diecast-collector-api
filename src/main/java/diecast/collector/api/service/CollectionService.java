@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Singleton
 public class CollectionService {
-    private CollectionRepository collectionRepository;
+    private final CollectionRepository collectionRepository;
 
     public CollectionService(CollectionRepository collectionRepository) {
         this.collectionRepository = collectionRepository;

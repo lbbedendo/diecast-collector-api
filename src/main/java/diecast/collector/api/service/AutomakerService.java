@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Singleton
 public class AutomakerService {
-    private AutomakerRepository automakerRepository;
+    private final AutomakerRepository automakerRepository;
 
     public AutomakerService(AutomakerRepository automakerRepository) {
         this.automakerRepository = automakerRepository;

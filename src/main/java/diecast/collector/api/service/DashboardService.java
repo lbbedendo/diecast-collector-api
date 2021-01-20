@@ -10,7 +10,7 @@ import java.util.List;
 
 @Singleton
 public class DashboardService {
-    private ModelRepository modelRepository;
+    private final ModelRepository modelRepository;
 
     public DashboardService(ModelRepository modelRepository) {
         this.modelRepository = modelRepository;

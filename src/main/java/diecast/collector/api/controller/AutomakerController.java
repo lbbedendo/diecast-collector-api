@@ -16,7 +16,7 @@ import java.util.List;
 
 @Controller("/automaker")
 public class AutomakerController implements AutomakerApi {
-    private AutomakerService automakerService;
+    private final AutomakerService automakerService;
 
     public AutomakerController(AutomakerService automakerService) {
         this.automakerService = automakerService;

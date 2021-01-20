@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller("/collection")
 public class CollectionController implements CollectionApi {
-    private CollectionService collectionService;
+    private final CollectionService collectionService;
 
     public CollectionController(CollectionService collectionService) {
         this.collectionService = collectionService;

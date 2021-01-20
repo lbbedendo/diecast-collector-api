@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller("/brand")
 public class BrandController implements BrandApi {
-    private BrandService brandService;
+    private final BrandService brandService;
 
     public BrandController(BrandService brandService) {
         this.brandService = brandService;

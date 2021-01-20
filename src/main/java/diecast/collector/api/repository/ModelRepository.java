@@ -19,7 +19,7 @@ import static diecast.collector.api.tables.Model.MODEL;
 
 @Repository
 public abstract class ModelRepository implements JpaRepository<Model, Integer> {
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
     public ModelRepository(DSLContext dslContext) {
         this.dslContext = dslContext;

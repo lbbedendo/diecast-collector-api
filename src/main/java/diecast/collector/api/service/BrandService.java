@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Singleton
 public class BrandService {
-    private BrandRepository brandRepository;
+    private final BrandRepository brandRepository;
 
     public BrandService(BrandRepository brandRepository) {
         this.brandRepository = brandRepository;

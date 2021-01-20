@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller("/model")
 public class ModelController implements ModelApi {
-    private ModelService modelService;
+    private final ModelService modelService;
 
     public ModelController(ModelService modelService) {
         this.modelService = modelService;

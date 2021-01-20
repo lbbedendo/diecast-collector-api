@@ -7,7 +7,7 @@ import io.micronaut.http.annotation.Get;
 
 @Controller("/dashboard")
 public class DashboardController {
-    private DashboardService dashboardService;
+    private final DashboardService dashboardService;
 
     public DashboardController(DashboardService dashboardService) {
         this.dashboardService = dashboardService;

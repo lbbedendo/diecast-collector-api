@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Singleton
 public class ModelService {
-    private ModelRepository modelRepository;
+    private final ModelRepository modelRepository;
 
     public ModelService(ModelRepository modelRepository) {
         this.modelRepository = modelRepository;

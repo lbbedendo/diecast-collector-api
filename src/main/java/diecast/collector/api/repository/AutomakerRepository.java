@@ -12,7 +12,7 @@ import static diecast.collector.api.tables.Automaker.AUTOMAKER;
 
 @Repository
 public abstract class AutomakerRepository implements JpaRepository<Automaker, Integer> {
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
     public AutomakerRepository(DSLContext dslContext) {
         this.dslContext = dslContext;
